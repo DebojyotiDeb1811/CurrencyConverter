@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f4f6;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        form {
+            display: grid;
+            gap: 10px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+        }
+
+        select, input[type="number"], button {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        button {
+            color: #fff;
+            background-color: #4a90e2;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .flag-image {
+            width: 40px;
+            height: auto;
+        }
+
+        .result-text {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Currency Converter</h1>
+        
+        <form method="POST" action="/">
+            <label for="from_currency">From:</label>
+            <select id="from_currency" name="from_currency">
+                {% for currency in currencies %}
+                    <option value="{{ currency }}" {% if currency == from_currency %}selected{% endif %}>{{ currency }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="to_currency">To:</label>
+            <select id="to_currency" name="to_currency">
+                {% for currency in currencies %}
+                    <option value="{{ currency }}" {% if currency == to_currency %}selected{% endif %}>{{ currency }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" value="{{ amount }}" required>
+
+            <button type="submit">Convert</button>
+        </form>
+
+        {% if result %}
+            <div class="result-container">
+                <!-- Flag of from_currency on the left -->
+                <img src="{{ url_for('static', filename='images/flags/' + from_currency + '.png') }}" 
+                     alt="{{ from_currency }} flag" class="flag-image">
+                
+                <!-- Result text in the center -->
+                <p class="result-text">{{ result }}</p>
+                
+                <!-- Flag of to_currency on the right -->
+                <img src="{{ url_for('static', filename='images/flags/' + to_currency + '.png') }}" 
+                     alt="{{ to_currency }} flag" class="flag-image">
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
